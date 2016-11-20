@@ -17,7 +17,7 @@
 
     <form action="index.html" method="post">
               
-      <fieldset>         
+      <fieldset class="basicinfo">         
         <legend>Basic Info</legend>
         
         <label for="name">Name:</label>
@@ -50,7 +50,7 @@
           </select>
         </div>
 
-        <div>
+        <div class="design-section">
           <label for="design">Design:</label>
           <select id="design" name="user_design">
             <option>Select Theme</option>
@@ -62,12 +62,12 @@
         <div id="colors-js-puns" class="">
           <label for="color">Color:</label>
           <select id="color">
-            <option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
-            <option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option> 
-            <option value="gold">Gold (JS Puns shirt only)</option> 
-            <option value="tomato">Tomato (I &#9829; JS shirt only)</option>
-            <option value="steelblue">Steel Blue (I &#9829; JS shirt only)</option> 
-            <option value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option> 
+            <option class="puns" value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
+            <option class="puns" value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option> 
+            <option class="puns" value="gold">Gold (JS Puns shirt only)</option> 
+            <option class="heart" value="tomato">Tomato (I &#9829; JS shirt only)</option>
+            <option class="heart" value="steelblue">Steel Blue (I &#9829; JS shirt only)</option> 
+            <option class="heart" value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option> 
           </select>
         </div>                
       </fieldset>
@@ -151,5 +151,6 @@
     </form>
 
 	</div>
+  <script src="js/script.js"></script>
 </body>
 </html>
