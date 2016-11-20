@@ -9,11 +9,11 @@ var jobRoleSelection = document.getElementById("title");
 var basicInfoSection = document.getElementsByClassName("basicinfo")[0];
 var designSelection = document.getElementById("design");
 var colorSelection = document.getElementById("color");
-var hiddenColorOptions = [];
 console.log(jobRoleSelection);
 console.log(basicInfoSection);
 console.log(designSelection);
 console.log(colorSelection);
+console.log(document.getElementsByClassName("puns")[0]);
 
 // "Job Role" section of the form: reveal a text field when the "Other" option is selected from the "Job Role" drop down menu
 document.getElementById("title").addEventListener("change", function () {
@@ -42,23 +42,32 @@ document.getElementById("design").addEventListener("change", function () {
     console.log(selectedDesign);
 
     // Variables holding the specific custom design options
-    var jsPuns = document.getElementById("design").options[value="js puns"];
+   /* var jsPuns = document.getElementById("design").options[value="js puns"];
     var iHeartJs = document.getElementById("design").options[value="heart js"];
     console.log(jsPuns);
-    console.log(iHeartJs);
+    console.log(iHeartJs);*/
 
     // Depending on which design is selected, display the matching colors and hide the colors that do not match design
-   if (selectedDesign === jsPuns) {
-       // variable containing the color options to show
-       //document.getElementById("color").options[value="cornflowerblue, darkslategrey, gold"].style.display = 'block';
-       // revision of line 53
-       /*var showColors = document.getElementsByClassName("puns");
-       showColors.style.display = 'block';*/
-       // variable containing the color options to hide
-       //document.getElementById("color").options[value="tomato, steelblue, dimgrey"].style.display = 'none';
-       // revision of line 57
-       var hideColors = document.getElementsByClassName("heart");
-       hideColors.style.display = 'none';
+   if (selectedDesign === "js puns") {
+
+       document.getElementsByClassName("heart")[0].style.display = 'none';
+       document.getElementsByClassName("heart")[1].style.display = 'none';
+       document.getElementsByClassName("heart")[2].style.display = 'none';
+
+       document.getElementsByClassName("puns")[0].style.display = 'block';
+       document.getElementsByClassName("puns")[1].style.display = 'block';
+       document.getElementsByClassName("puns")[2].style.display = 'block';
+       
+   } else if (selectedDesign === "heart js") {
+
+       document.getElementsByClassName("puns")[0].style.display = 'none';
+       document.getElementsByClassName("puns")[1].style.display = 'none';
+       document.getElementsByClassName("puns")[2].style.display = 'none';
+
+       document.getElementsByClassName("heart")[0].style.display = 'block';
+       document.getElementsByClassName("heart")[1].style.display = 'block';
+       document.getElementsByClassName("heart")[2].style.display = 'block';
+
    }
 
 });
