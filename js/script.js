@@ -94,13 +94,13 @@ Disable the checkbox and visually indicate that the workshop in the competing ti
 activities.addEventListener("change", function () {
 
     // The workshop checkboxes
-    var main = document.getElementById("all");
-    var jsFrameworks = document.getElementById("js-frameworks");
-    var jsLibs = document.getElementById("js-libs");
-    var express = document.getElementById("express");
-    var node = document.getElementById("node");
-    var buildTools = document.getElementById("build-tools");
-    var npm = document.getElementById("npm");
+    var main = document.getElementsByTagName("input")[name="all"];
+    var jsFrameworks = document.getElementsByTagName("input")[name="js-frameworks"];
+    var jsLibs = document.getElementsByTagName("input")[name="js-libs"];
+    var express = document.getElementsByTagName("input")[name="express"]
+    var node = document.getElementsByTagName("input")[name="node"];
+    var buildTools = document.getElementsByTagName("input")[name="build-tools"];
+    var npm = document.getElementsByTagName("input")[name="npm"];
 
     // Labels for the workshop checkboxes to be disabled
     var expressLabel = document.getElementById("expresslabel");
@@ -108,44 +108,87 @@ activities.addEventListener("change", function () {
     var jsLibsLabel = document.getElementById("libslabel");
     var nodeLabel = document.getElementById("nodelabel");
 
+    // Variable containing the total cost of all the workshops
+    var totalCost = 0;
+
+    // Variable containing the div to append to the checkboxes section for total cost
+    var totalCostDiv = document.createElement('div');
+    totalCostDiv.setAttribute("id", "totalcost");
+
+    // Actitivities section with the appended div to inform user of total cost of workshops selected
+    activities.appendChild(totalCostDiv);
+
+    // Function to update the cost when workshop is selected
+    var updateTotalCost = function (cost) {
+        totalCost += cost;
+        document.getElementById("totalcost").innerHTML = "Total: $ " + totalCost;
+    };
+
+    // If the workshops that do not have a time conflict are checked, update the total cost
+    if (main.checked == true) {
+        updateTotalCost(200);
+    } else {
+        updateTotalCost(-200);
+    }
+
+    if (buildTools.checked == true) {
+        updateTotalCost(100);
+    } else {
+        updateTotalCost(-100);
+    }
+
+    if (npm.checked == true) {
+        updateTotalCost(100);
+    } else {
+        updateTotalCost(-100);
+    }
+
     // If a workshop is selected that conflicts with another, disable the other
+    // As a user selects activities to register for, a running total is listed below the list of checkboxes
     if (jsFrameworks.checked == true) {
         express.disabled = true;
         expressLabel.style.color = "grey";
+        updateTotalCost(100);
     } else if (express.checked == true) {
         jsFrameworks.disabled = true;
         jsFrameworksLabel.style.color = "grey";
+        updateTotalCost(100);
     }
 
     if (jsLibs.checked == true) {
         node.disabled = true;
         nodeLabel.style.color = "grey";
+        updateTotalCost(100);
     } else if (node.checked == true) {
         jsLibs.disabled = true;
         jsLibsLabel.style.color = "grey";
+        updateTotalCost(100);
     }
 
     // If a workshop that conflicted with another is deselected, reenable the disabled, conflicting workshop
+    // As a user selects activities to register for, a running total is listed below the list of checkboxes
     if (jsFrameworks.checked == false) {
         express.disabled = false;
         expressLabel.style.color = "black";
+        updateTotalCost(-100);
     }
 
     if (express.checked == false) {
         jsFrameworks.disabled = false;
         jsFrameworksLabel.style.color = "black";
+        updateTotalCost(-100);
     }
 
     if (jsLibs.checked == false) {
         node.disabled = false;
         nodeLabel.style.color = "black";
+        updateTotalCost(-100);
     }
 
     if (node.checked == false) {
         jsLibs.disabled = false;
         jsLibsLabel.style.color = "black";
+        updateTotalCost(-100);
     }
 
 });
-
-// As a user selects activities to register for, a running total is listed below the list of checkboxes
