@@ -91,11 +91,9 @@ designSelection.addEventListener("change", function () {
 
 /* If the user selects a workshop, don't allow selection of a workshop at the same date and time
 Disable the checkbox and visually indicate that the workshop in the competing time slot isn't available */
-// Maybe make variables containing each checkbox value?
-
 activities.addEventListener("change", function () {
 
-    // Variables containing each workshop checkbox
+    // The workshop checkboxes
     var main = document.getElementById("all");
     var jsFrameworks = document.getElementById("js-frameworks");
     var jsLibs = document.getElementById("js-libs");
@@ -104,8 +102,50 @@ activities.addEventListener("change", function () {
     var buildTools = document.getElementById("build-tools");
     var npm = document.getElementById("npm");
 
+    // Labels for the workshop checkboxes to be disabled
+    var expressLabel = document.getElementById("expresslabel");
+    var jsFrameworksLabel = document.getElementById("frameworkslabel");
+    var jsLibsLabel = document.getElementById("libslabel");
+    var nodeLabel = document.getElementById("nodelabel");
+
     // If a workshop is selected that conflicts with another, disable the other
     if (jsFrameworks.checked == true) {
-        express.disabled == true;
+        express.disabled = true;
+        expressLabel.style.color = "grey";
+    } else if (express.checked == true) {
+        jsFrameworks.disabled = true;
+        jsFrameworksLabel.style.color = "grey";
     }
+
+    if (jsLibs.checked == true) {
+        node.disabled = true;
+        nodeLabel.style.color = "grey";
+    } else if (node.checked == true) {
+        jsLibs.disabled = true;
+        jsLibsLabel.style.color = "grey";
+    }
+
+    // If a workshop that conflicted with another is deselected, reenable the disabled, conflicting workshop
+    if (jsFrameworks.checked == false) {
+        express.disabled = false;
+        expressLabel.style.color = "black";
+    }
+
+    if (express.checked == false) {
+        jsFrameworks.disabled = false;
+        jsFrameworksLabel.style.color = "black";
+    }
+
+    if (jsLibs.checked == false) {
+        node.disabled = false;
+        nodeLabel.style.color = "black";
+    }
+
+    if (node.checked == false) {
+        jsLibs.disabled = false;
+        jsLibsLabel.style.color = "black";
+    }
+
 });
+
+// As a user selects activities to register for, a running total is listed below the list of checkboxes
