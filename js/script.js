@@ -217,3 +217,27 @@ activities.addEventListener("change", function () {
 
 });
 
+// Form validation: display error messages and don't let the user submit the form if any of these validation errors exist:
+// Name field can't be empty
+
+var nameField = document.getElementById("name"); // global variable
+console.log(nameField);
+var submitButton = document.getElementById("submit");
+console.log(submitButton);
+var nameLabel = document.getElementById("name-label");
+console.log(nameLabel);
+
+// function on page click
+submitButton.addEventListener("click", function () {
+if (nameField.value == "") {
+        var nameErrorMessage = document.createElement("p");
+        nameErrorMessage.innerHTML = "Please enter your name.";
+        nameErrorMessage.style.color = "red";
+        console.log(nameErrorMessage);
+        nameLabel.appendChild(nameErrorMessage);
+        submitButton.disabled = true;
+    } else if (nameField.value != "") {
+        submitButton.disabled = false;
+    }
+});
+
