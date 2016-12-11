@@ -5,19 +5,19 @@ var basicInfoSection = document.getElementsByClassName("basicinfo")[0];
 var designSelection = document.getElementById("design");
 var colorSelection = document.getElementById("color");
 var activities = document.getElementsByClassName("activities")[0];
-console.log(jobRoleSelection);
-console.log(basicInfoSection);
-console.log(designSelection);
-console.log(colorSelection);
-console.log(colorSelection.selectedIndex);
-console.log(activities);
-console.log(colorSelection);
-console.log(document.getElementsByClassName("puns")[0]);
+// console.log(jobRoleSelection);
+// console.log(basicInfoSection);
+// console.log(designSelection);
+// console.log(colorSelection);
+// console.log(colorSelection.selectedIndex);
+ console.log(activities);
+// console.log(colorSelection);
+// console.log(document.getElementsByClassName("puns")[0]);
 
 // Variable containing the payment select menu
 var paymentOptions = document.getElementById("payment");
-console.log(paymentOptions.options[1]);
-console.log(paymentOptions);
+//console.log(paymentOptions.options[1]);
+//console.log(paymentOptions);
 
 // Variables containing Bitcoin, Paypal, and credit card information
 var paypalInfo = document.getElementById("paypalinfo");
@@ -63,7 +63,7 @@ jobRoleSelection.addEventListener("change", function () {
 
     // Variable containing the selecting job role from the job role dropdown
     var selectedJobRole = jobRoleSelection.options[jobRoleSelection.selectedIndex].value;
-    console.log(selectedJobRole);
+    //console.log(selectedJobRole);
 
     // If the "other" option is selected, display a text field
     if (selectedJobRole === "other") {
@@ -82,7 +82,7 @@ designSelection.addEventListener("change", function () {
 
     // Variable containing the selected option from design
     var selectedDesign = designSelection.options[designSelection.selectedIndex].value;
-    console.log(selectedDesign);
+    //console.log(selectedDesign);
 
     // Depending on which design is selected, display the matching colors and hide the colors that do not match design
    if (selectedDesign === "js puns") {
@@ -219,25 +219,101 @@ activities.addEventListener("change", function () {
 
 // Form validation: display error messages and don't let the user submit the form if any of these validation errors exist:
 // Name field can't be empty
-
-var nameField = document.getElementById("name"); // global variable
-console.log(nameField);
+var nameField = document.getElementById("name"); // global variables
+//console.log(nameField);
 var submitButton = document.getElementById("submit");
-console.log(submitButton);
+//console.log(submitButton);
 var nameLabel = document.getElementById("name-label");
-console.log(nameLabel);
+//console.log(nameLabel);
+var emailLabel = document.getElementById("email-label")
+// Validate email format
+// Method to validate email format
+var emailField = document.getElementById("mail");
+// Activities label
+var activityLabel = document.getElementById("activities-label");
+// Activity checkboxes
+var checkboxes = document.querySelectorAll(".activities input");
+console.log(checkboxes);
 
-// function on page click
-submitButton.addEventListener("click", function () {
-if (nameField.value == "") {
-        var nameErrorMessage = document.createElement("p");
-        nameErrorMessage.innerHTML = "Please enter your name.";
-        nameErrorMessage.style.color = "red";
-        console.log(nameErrorMessage);
-        nameLabel.appendChild(nameErrorMessage);
-        submitButton.disabled = true;
-    } else if (nameField.value != "") {
-        submitButton.disabled = false;
+// Validation functions
+function validateEmail(emailString) {
+    var emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailFormat.test(emailString);
     }
+
+function validateName(name) {
+    return name !== "";
+}
+
+/*function validateActivity(activity) {
+    for (var i = 0; i < checkboxes.length; i++) {
+        var checkedCheckbox = checkboxes[i].checked;
+        console.log(checkedCheckbox);
+        if (!checkedCheckbox) {
+            return false;
+        }
+    }
+}*/
+
+// Event listener to validate fields upon selecting submit button
+submitButton.addEventListener("click", function(event) {
+
+function validateActivity(activity) {
+    var checkCount = 0;
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            checkCount++;
+        }
+    }
+    if (checkCount < 1) {
+        return false;
+    }
+    return true;
+}
+
+console.log(event);
+console.log("emailvalidate is", validateEmail(emailField.value));
+console.log(emailLabel.children);
+
+    if (!validateEmail(emailField.value)) {
+        event.preventDefault();
+        if (emailLabel.children.length < 1) {
+            var emailErrorMessage = document.createElement("p");
+            emailErrorMessage.innerHTML = "Please enter a valid email address.";
+            emailErrorMessage.style.color = "red";
+            emailLabel.appendChild(emailErrorMessage);
+        }
+    } else if (emailLabel.children.length >= 1) {
+        emailLabel.removeChild(emailLabel.children[0]);
+    }
+
+    if (!validateName(nameField.value)) {
+        event.preventDefault();
+        if (nameLabel.children.length < 1) {
+            var nameErrorMessage = document.createElement("p");
+            nameErrorMessage.innerHTML = "Please enter your name.";
+            nameErrorMessage.style.color = "red";
+            //console.log(nameErrorMessage);
+            nameLabel.appendChild(nameErrorMessage);
+            //console.log(validateEmail("test@gmail.com"));
+        }
+    } else if (nameLabel.children.length >= 1) {
+        nameLabel.removeChild(nameLabel.children[0]);
+    }
+
+    // At least one activity must be checked from the list under "Register for Actitivities."
+    if (!validateActivity(checkboxes)) {
+        event.preventDefault();
+        if (activityLabel.children.length < 1) {
+            var activityErrorMessage = document.createElement("p");
+            activityErrorMessage.innerHTML = "Please select at least one activity.";
+            activityErrorMessage.style.color = "red";
+            activityLabel.appendChild(activityErrorMessage);
+        } else if (activityLabel.children.length >= 1) {
+            activityLabel.removeChild(activityLabel.children[0]);
+        }   
+    }
+
 });
+
 
