@@ -19,9 +19,10 @@ window.onload = function() {
     document.getElementById("name").focus();
     /** The "Credit Card" payment option should be selected by default and result in the display 
     of the #credit-card div. When credit card option is selected by default, hide the Paypal and Bitcoin information **/
-    var defaultSelectedPayment = paymentOptions.options[paymentOptions.selectedIndex] = paymentOptions.options[1];
+    paymentOptions.options[paymentOptions.selectedIndex] = paymentOptions.options[1];
     paypalInfo.style.display = "none";
     bitcoinInfo.style.display = "none";
+    // Hide the color options until the user selects a theme
     colorSelection.options[1].style.display = "none";
     colorSelection.options[2].style.display = "none";
     colorSelection.options[3].style.display = "none";
@@ -30,11 +31,10 @@ window.onload = function() {
     colorSelection.options[6].style.display = "none";
 };
 
-/** When credit card option is selected by default, hide the Paypal and Bitcoin information
-When Paypal or Bitcoin option is selected, display respective information **/
+// When Paypal or Bitcoin option is selected, display respective information
 paymentOptions.addEventListener("change", function () {
 
-    // The indexing appears to accord with order as displayed when select is prompted
+    // The indexing appears to accord with order as displayed when select is prompted in UI
     if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1]) {
         paypalInfo.style.display = "block";
         bitcoinInfo.style.display = "none";
@@ -57,9 +57,8 @@ paymentOptions.addEventListener("change", function () {
 // "Job Role" section of the form: reveal a text field when the "Other" option is selected from the "Job Role" drop down menu
 jobRoleSelection.addEventListener("change", function () {
 
-    // Variable containing the selecting job role from the job role dropdown
+    // Variable containing the selected job role from the job role dropdown
     var selectedJobRole = jobRoleSelection.options[jobRoleSelection.selectedIndex].value;
-    //console.log(selectedJobRole);
 
     // If the "other" option is selected, display a text field
     if (selectedJobRole === "other") {
@@ -81,7 +80,6 @@ designSelection.addEventListener("change", function () {
 
     // Variable containing the selected option from design
     var selectedDesign = designSelection.options[designSelection.selectedIndex].value;
-    //console.log(selectedDesign);
 
     // Depending on which design is selected, display the matching colors and hide the colors that do not match design
    if (selectedDesign === "js puns") {
@@ -116,11 +114,13 @@ designSelection.addEventListener("change", function () {
 
    } else if (selectedDesign === "select theme") {
 
+       // Have the "Please select a T-shirt theme" option display
        colorSelection.selectedIndex = 0;
 
        // Tell the user to select a theme
        document.getElementsByClassName("select-theme")[0].style.display = 'block';
 
+       // Hide the options for the "puns" and "heart" shirts
        document.getElementsByClassName("puns")[0].style.display = 'none';
        document.getElementsByClassName("puns")[1].style.display = 'none';
        document.getElementsByClassName("puns")[2].style.display = 'none';
@@ -145,7 +145,7 @@ activities.addEventListener("change", function () {
     var buildTools = document.getElementsByTagName("input")[name="build-tools"];
     var npm = document.getElementsByTagName("input")[name="npm"];
 
-    // Labels for the workshop checkboxes to be disabled
+    // Labels for the workshop checkboxes to be disabled.
     var expressLabel = document.getElementById("expresslabel");
     var jsFrameworksLabel = document.getElementById("frameworkslabel");
     var jsLibsLabel = document.getElementById("libslabel");
@@ -154,7 +154,7 @@ activities.addEventListener("change", function () {
     // Variable containing the total cost of all the workshops
     var totalCost = 0;
 
-    // Variable containing the div to append to the checkboxes section for total cost
+    // Variable containing the div to append to the activities section for total cost
     var totalCostDiv = document.createElement('div');
     totalCostDiv.setAttribute("id", "totalcost");
 
@@ -175,7 +175,7 @@ activities.addEventListener("change", function () {
     }
 
     // If a workshop is selected that conflicts with another, disable the other
-    // As a user selects activities to register for, a running total is listed below the list of checkboxes
+    // As a user selects activities to register for, a running total is listed below the list of activities
     if (jsFrameworks.checked === true) {
         express.disabled = true;
         expressLabel.style.color = "grey";
@@ -222,34 +222,21 @@ activities.addEventListener("change", function () {
 
 });
 
-// Form validation: display error messages and don't let the user submit the form if any of these validation errors exist:
+// Form validation: display error messages and don't let the user submit the form if any of these validation errors exist
 
-// Name field can't be empty
-var nameField = document.getElementById("name"); // global variables
-//console.log(nameField);
+// Label and input variables
+var nameField = document.getElementById("name");
 var submitButton = document.getElementById("submit");
-//console.log(submitButton);
 var nameLabel = document.getElementById("name-label");
-//console.log(nameLabel);
 var emailLabel = document.getElementById("email-label");
-// Validate email format
-// Method to validate email format
 var emailField = document.getElementById("mail");
-// Activities label
 var activityLabel = document.getElementById("activities-label");
-// Credit Card number label
 var ccNumLabel = document.getElementById("cc-num-label");
-// Zip code label
 var zipLabel = document.getElementById("zip-label");
-// CVV label
 var cvvLabel = document.getElementById("cvv-label");
-// Activity checkboxes
 var checkboxes = document.querySelectorAll(".activities input");
-// Input for credit card
 var ccNumInput = document.getElementById("cc-num");
-// Input for zip code
 var zipCodeInput = document.getElementById("zip");
-// Input for cvv
 var cvvInput = document.getElementById("cvv");
 
 // Validation functions
@@ -262,7 +249,7 @@ function validateName(name) {
     return name !== "";
 }
 
-function validateActivity(activity) {
+function validateActivity() {
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
             return true;
@@ -271,40 +258,43 @@ function validateActivity(activity) {
     return false;
 }
 
-function validateCreditCardNum(creditcardnum) {
+function validateCreditCardNum() {
+    var selectedPaymentOption = paymentOptions.options[paymentOptions.selectedIndex];
     var enteredCardNum = ccNumInput.value;
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
+    if (selectedPaymentOption == paymentOptions.options[0]) {
         if (enteredCardNum.length >= 13 && enteredCardNum.length <= 16) {
             return true;
         } 
     }
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+    if (selectedPaymentOption == paymentOptions.options[1] || selectedPaymentOption == paymentOptions.options[2]) {
         return true;
     }
     return false;
 }
 
-function validateZipCode(zipcode) {
+function validateZipCode() {
+    var selectedPaymentOption = paymentOptions.options[paymentOptions.selectedIndex]; 
     var enteredZip = zipCodeInput.value;
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
+    if (selectedPaymentOption == paymentOptions.options[0]) {
         if (enteredZip.length == 5) {
             return true;
         } 
     }
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+    if (selectedPaymentOption == paymentOptions.options[1] || selectedPaymentOption == paymentOptions.options[2]) {
         return true;
     }
     return false;
 }
 
-function validateCvv(cvv) {
+function validateCvv() {
+    var selectedPaymentOption = paymentOptions.options[paymentOptions.selectedIndex];
     var enteredCvv = cvvInput.value;
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
+    if (selectedPaymentOption == paymentOptions.options[0]) {
         if (enteredCvv.length == 3) {
             return true;
         } 
     }
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+    if (selectedPaymentOption == paymentOptions.options[1] || selectedPaymentOption == paymentOptions.options[2]) {
         return true;
     }
     return false;
@@ -344,7 +334,7 @@ console.log(emailLabel.children);
     }
 
     // At least one activity must be checked from the list under "Register for Actitivities."
-    if (!validateActivity(checkboxes)) {
+    if (!validateActivity()) {
         event.preventDefault();
         if (activityLabel.children.length < 1) {
             var activityErrorMessage = document.createElement("p");
@@ -357,7 +347,7 @@ console.log(emailLabel.children);
     }
 
     // Credit card number must be entered
-    if (!validateCreditCardNum(ccNumInput)) {
+    if (!validateCreditCardNum()) {
         event.preventDefault();
         ccNumLabel.style.color = "red";
     } else {
@@ -365,7 +355,7 @@ console.log(emailLabel.children);
     }
 
     // Zip code must be entered
-    if (!validateZipCode(zipCodeInput)) {
+    if (!validateZipCode()) {
         event.preventDefault();
         zipLabel.style.color = "red";
     } else {
@@ -373,7 +363,7 @@ console.log(emailLabel.children);
     }
 
     // CVV must be entered
-    if (!validateCvv(cvvInput)) {
+    if (!validateCvv()) {
         event.preventDefault();
         cvvLabel.style.color = "red";
     } else {
