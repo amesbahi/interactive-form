@@ -5,19 +5,9 @@ var basicInfoSection = document.getElementsByClassName("basicinfo")[0];
 var designSelection = document.getElementById("design");
 var colorSelection = document.getElementById("color");
 var activities = document.getElementsByClassName("activities")[0];
-// console.log(jobRoleSelection);
-// console.log(basicInfoSection);
-// console.log(designSelection);
-// console.log(colorSelection);
-// console.log(colorSelection.selectedIndex);
- console.log(activities);
-// console.log(colorSelection);
-// console.log(document.getElementsByClassName("puns")[0]);
 
 // Variable containing the payment select menu
 var paymentOptions = document.getElementById("payment");
-//console.log(paymentOptions.options[1]);
-//console.log(paymentOptions);
 
 // Variables containing Bitcoin, Paypal, and credit card information
 var paypalInfo = document.getElementById("paypalinfo");
@@ -32,7 +22,13 @@ window.onload = function() {
     var defaultSelectedPayment = paymentOptions.options[paymentOptions.selectedIndex] = paymentOptions.options[1];
     paypalInfo.style.display = "none";
     bitcoinInfo.style.display = "none";
-}
+    colorSelection.options[1].style.display = "none";
+    colorSelection.options[2].style.display = "none";
+    colorSelection.options[3].style.display = "none";
+    colorSelection.options[4].style.display = "none";
+    colorSelection.options[5].style.display = "none";
+    colorSelection.options[6].style.display = "none";
+};
 
 /** When credit card option is selected by default, hide the Paypal and Bitcoin information
 When Paypal or Bitcoin option is selected, display respective information **/
@@ -73,6 +69,9 @@ jobRoleSelection.addEventListener("change", function () {
         otherTextField.setAttribute('type', 'text');
 
         basicInfoSection.appendChild(otherTextField);
+    } else if (basicInfoSection.children.length >= 8) {
+        // If the "other" option is selected and then no longer selected, hide "other" text field
+        basicInfoSection.removeChild(basicInfoSection.children[7]);
     }
 
 });
@@ -88,7 +87,7 @@ designSelection.addEventListener("change", function () {
    if (selectedDesign === "js puns") {
 
        // Grab the first option for "puns" and have it display as selected
-       colorSelection.selectedIndex = 0;
+       colorSelection.selectedIndex = 1;
 
        document.getElementsByClassName("heart")[0].style.display = 'none';
        document.getElementsByClassName("heart")[1].style.display = 'none';
@@ -97,11 +96,13 @@ designSelection.addEventListener("change", function () {
        document.getElementsByClassName("puns")[0].style.display = 'block';
        document.getElementsByClassName("puns")[1].style.display = 'block';
        document.getElementsByClassName("puns")[2].style.display = 'block';
+
+       document.getElementsByClassName("select-theme")[0].style.display = 'none';
        
    } else if (selectedDesign === "heart js") {
 
        // Grab the first option for "heart js" and have it display as selected
-       colorSelection.selectedIndex = 3;
+       colorSelection.selectedIndex = 4;
 
        document.getElementsByClassName("puns")[0].style.display = 'none';
        document.getElementsByClassName("puns")[1].style.display = 'none';
@@ -111,18 +112,22 @@ designSelection.addEventListener("change", function () {
        document.getElementsByClassName("heart")[1].style.display = 'block';
        document.getElementsByClassName("heart")[2].style.display = 'block';
 
+       document.getElementsByClassName("select-theme")[0].style.display = 'none';
+
    } else if (selectedDesign === "select theme") {
 
-       // Grab the first option in the select menu and have it display as selected
        colorSelection.selectedIndex = 0;
 
-       document.getElementsByClassName("puns")[0].style.display = 'block';
-       document.getElementsByClassName("puns")[1].style.display = 'block';
-       document.getElementsByClassName("puns")[2].style.display = 'block';
+       // Tell the user to select a theme
+       document.getElementsByClassName("select-theme")[0].style.display = 'block';
 
-       document.getElementsByClassName("heart")[0].style.display = 'block';
-       document.getElementsByClassName("heart")[1].style.display = 'block';
-       document.getElementsByClassName("heart")[2].style.display = 'block';
+       document.getElementsByClassName("puns")[0].style.display = 'none';
+       document.getElementsByClassName("puns")[1].style.display = 'none';
+       document.getElementsByClassName("puns")[2].style.display = 'none';
+
+       document.getElementsByClassName("heart")[0].style.display = 'none';
+       document.getElementsByClassName("heart")[1].style.display = 'none';
+       document.getElementsByClassName("heart")[2].style.display = 'none';
    }
 
 });
@@ -135,7 +140,7 @@ activities.addEventListener("change", function () {
     var main = document.getElementsByTagName("input")[name="all"];
     var jsFrameworks = document.getElementsByTagName("input")[name="js-frameworks"];
     var jsLibs = document.getElementsByTagName("input")[name="js-libs"];
-    var express = document.getElementsByTagName("input")[name="express"]
+    var express = document.getElementsByTagName("input")[name="express"];
     var node = document.getElementsByTagName("input")[name="node"];
     var buildTools = document.getElementsByTagName("input")[name="build-tools"];
     var npm = document.getElementsByTagName("input")[name="npm"];
@@ -157,35 +162,35 @@ activities.addEventListener("change", function () {
     activities.appendChild(totalCostDiv);
 
     // If the workshops that do not have a time conflict are checked, update the total cost
-    if (main.checked == true) {
+    if (main.checked === true) {
         totalCost += 200;
     }
 
-    if (buildTools.checked == true) {
+    if (buildTools.checked === true) {
         totalCost += 100;
     }
 
-    if (npm.checked == true) {
+    if (npm.checked === true) {
         totalCost += 100;
     }
 
     // If a workshop is selected that conflicts with another, disable the other
     // As a user selects activities to register for, a running total is listed below the list of checkboxes
-    if (jsFrameworks.checked == true) {
+    if (jsFrameworks.checked === true) {
         express.disabled = true;
         expressLabel.style.color = "grey";
         totalCost += 100;
-    } else if (express.checked == true) {
+    } else if (express.checked === true) {
         jsFrameworks.disabled = true;
         jsFrameworksLabel.style.color = "grey";
         totalCost += 100;
     }
 
-    if (jsLibs.checked == true) {
+    if (jsLibs.checked === true) {
         node.disabled = true;
         nodeLabel.style.color = "grey";
         totalCost += 100;
-    } else if (node.checked == true) {
+    } else if (node.checked === true) {
         jsLibs.disabled = true;
         jsLibsLabel.style.color = "grey";
         totalCost += 100;
@@ -195,22 +200,22 @@ activities.addEventListener("change", function () {
     document.getElementById("totalcost").innerHTML = "Total: $ " + totalCost;
 
     // If a workshop that conflicted with another is deselected, reenable the disabled, conflicting workshop
-    if (jsFrameworks.checked == false) {
+    if (jsFrameworks.checked === false) {
         express.disabled = false;
         expressLabel.style.color = "black";
     }
 
-    if (express.checked == false) {
+    if (express.checked === false) {
         jsFrameworks.disabled = false;
         jsFrameworksLabel.style.color = "black";
     }
 
-    if (jsLibs.checked == false) {
+    if (jsLibs.checked === false) {
         node.disabled = false;
         nodeLabel.style.color = "black";
     }
 
-    if (node.checked == false) {
+    if (node.checked === false) {
         jsLibs.disabled = false;
         jsLibsLabel.style.color = "black";
     }
@@ -218,6 +223,7 @@ activities.addEventListener("change", function () {
 });
 
 // Form validation: display error messages and don't let the user submit the form if any of these validation errors exist:
+
 // Name field can't be empty
 var nameField = document.getElementById("name"); // global variables
 //console.log(nameField);
@@ -225,25 +231,26 @@ var submitButton = document.getElementById("submit");
 //console.log(submitButton);
 var nameLabel = document.getElementById("name-label");
 //console.log(nameLabel);
-var emailLabel = document.getElementById("email-label")
+var emailLabel = document.getElementById("email-label");
 // Validate email format
 // Method to validate email format
 var emailField = document.getElementById("mail");
 // Activities label
 var activityLabel = document.getElementById("activities-label");
-// Payment label
-var paymentLabel = document.getElementById("payment-label");
+// Credit Card number label
+var ccNumLabel = document.getElementById("cc-num-label");
+// Zip code label
+var zipLabel = document.getElementById("zip-label");
+// CVV label
+var cvvLabel = document.getElementById("cvv-label");
 // Activity checkboxes
 var checkboxes = document.querySelectorAll(".activities input");
-console.log(checkboxes);
 // Input for credit card
 var ccNumInput = document.getElementById("cc-num");
 // Input for zip code
 var zipCodeInput = document.getElementById("zip");
 // Input for cvv
 var cvvInput = document.getElementById("cvv");
-// Credit card to pass through validateCreditCardInfo function
-var creditCard = document.getElementById("credit-card");
 
 // Validation functions
 function validateEmail(emailString) {
@@ -264,17 +271,40 @@ function validateActivity(activity) {
     return false;
 }
 
-function validateCreditCardInfo(creditcard) {
+function validateCreditCardNum(creditcardnum) {
     var enteredCardNum = ccNumInput.value;
-    var enteredZip = zipCodeInput.value;
-    var enteredCvv = cvvInput.value;
     if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
-        if ((enteredCardNum.length >= 13 && enteredCardNum.length <= 16) && enteredZip.length == 5 && enteredCvv.length == 3) {
+        if (enteredCardNum.length >= 13 && enteredCardNum.length <= 16) {
             return true;
         } 
     }
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] 
-    || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+        return true;
+    }
+    return false;
+}
+
+function validateZipCode(zipcode) {
+    var enteredZip = zipCodeInput.value;
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
+        if (enteredZip.length == 5) {
+            return true;
+        } 
+    }
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+        return true;
+    }
+    return false;
+}
+
+function validateCvv(cvv) {
+    var enteredCvv = cvvInput.value;
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
+        if (enteredCvv.length == 3) {
+            return true;
+        } 
+    }
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
         return true;
     }
     return false;
@@ -326,17 +356,28 @@ console.log(emailLabel.children);
             activityLabel.removeChild(activityLabel.children[0]);   
     }
 
-    //  Payment option must be selected
-    if (!validateCreditCardInfo(creditCard)) {
+    // Credit card number must be entered
+    if (!validateCreditCardNum(ccNumInput)) {
         event.preventDefault();
-        if (paymentLabel.children.length < 1) {
-            var paymentErrorMessage = document.createElement("p");
-            paymentErrorMessage.innerHTML = "Please enter a valid credit card number, zip code, and CVV.";
-            paymentErrorMessage.style.color = "red";
-            paymentLabel.appendChild(paymentErrorMessage);
-        }
-    } else if (paymentLabel.children.length >= 1) {
-            paymentLabel.removeChild(paymentLabel.children[0]);   
+        ccNumLabel.style.color = "red";
+    } else {
+        ccNumLabel.style.color = "black";
+    }
+
+    // Zip code must be entered
+    if (!validateZipCode(zipCodeInput)) {
+        event.preventDefault();
+        zipLabel.style.color = "red";
+    } else {
+        zipLabel.style.color = "black";
+    }
+
+    // CVV must be entered
+    if (!validateCvv(cvvInput)) {
+        event.preventDefault();
+        cvvLabel.style.color = "red";
+    } else {
+        cvvLabel.style.color = "black";
     }
 
 });
