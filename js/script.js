@@ -1,5 +1,5 @@
 
-// Global variabls
+// Global variables
 var jobRoleSelection = document.getElementById("title");
 var basicInfoSection = document.getElementsByClassName("basicinfo")[0];
 var designSelection = document.getElementById("design");
@@ -236,6 +236,14 @@ var paymentLabel = document.getElementById("payment-label");
 // Activity checkboxes
 var checkboxes = document.querySelectorAll(".activities input");
 console.log(checkboxes);
+// Input for credit card
+var ccNumInput = document.getElementById("cc-num");
+// Input for zip code
+var zipCodeInput = document.getElementById("zip");
+// Input for cvv
+var cvvInput = document.getElementById("cvv");
+// Credit card to pass through validateCreditCardInfo function
+var creditCard = document.getElementById("credit-card");
 
 // Validation functions
 function validateEmail(emailString) {
@@ -256,15 +264,19 @@ function validateActivity(activity) {
     return false;
 }
 
-function validatePayment(options) {
-    var creditCardFormat = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][‌​0-9])[0-9]{12}|3[47]‌​[0-9]{13}|3(?:0[0-5]‌​|[68][0-9])[0-9]{11}‌​|(?:2131|1800|35\\d{‌​3})\\d{11})$/;
-    var zipCodeFormat = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
-    var cvvFormat = /^[0-9]{3,4}$/;
-    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1]) {
-        if (creditCardFormat.test(paymentOptions) && zipCodeFormat.test(paymentOptions) && cvvFormat.test(paymentOptions)) {
-            return true; // do something like return emailFormat.test(emailString);
-             }
-        }
+function validateCreditCardInfo(creditcard) {
+    var enteredCardNum = ccNumInput.value;
+    var enteredZip = zipCodeInput.value;
+    var enteredCvv = cvvInput.value;
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[0]) {
+        if ((enteredCardNum.length >= 13 && enteredCardNum.length <= 16) && enteredZip.length == 5 && enteredCvv.length == 3) {
+            return true;
+        } 
+    }
+    if (paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[1] 
+    || paymentOptions.options[paymentOptions.selectedIndex] == paymentOptions.options[2]) {
+        return true;
+    }
     return false;
 }
 
@@ -315,11 +327,11 @@ console.log(emailLabel.children);
     }
 
     //  Payment option must be selected
-    if (!validatePayment(paymentOptions)) {
+    if (!validateCreditCardInfo(creditCard)) {
         event.preventDefault();
         if (paymentLabel.children.length < 1) {
             var paymentErrorMessage = document.createElement("p");
-            paymentErrorMessage.innerHTML = "Please select at least one payment method.";
+            paymentErrorMessage.innerHTML = "Please enter a valid credit card number, zip code, and CVV.";
             paymentErrorMessage.style.color = "red";
             paymentLabel.appendChild(paymentErrorMessage);
         }
