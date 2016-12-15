@@ -13,6 +13,8 @@ var paymentOptions = document.getElementById("payment");
 var paypalInfo = document.getElementById("paypalinfo");
 var bitcoinInfo = document.getElementById("bitcoininfo");
 var creditCardInfo = document.getElementById("credit-card");
+// Variable containing the "other"" input field when user has "other" job
+var otherTitleField = document.getElementById("other-title");
     
 // When the page loads, give focus to the first text field.
 window.onload = function() {
@@ -29,6 +31,8 @@ window.onload = function() {
     colorSelection.options[4].style.display = "none";
     colorSelection.options[5].style.display = "none";
     colorSelection.options[6].style.display = "none";
+    // Hide the other job role input
+    otherTitleField.style.display = "none";
 };
 
 // When Paypal or Bitcoin option is selected, display respective information
@@ -62,15 +66,10 @@ jobRoleSelection.addEventListener("change", function () {
 
     // If the "other" option is selected, display a text field
     if (selectedJobRole === "other") {
-        var otherTextField = document.createElement('input');
-        otherTextField.setAttribute('id', 'other-title');
-        otherTextField.setAttribute('placeholder', 'Your Title');
-        otherTextField.setAttribute('type', 'text');
-
-        basicInfoSection.appendChild(otherTextField);
-    } else if (basicInfoSection.children.length >= 8) {
+        otherTitleField.style.display = "block";
+    } else if (selectedJobRole != "other") {
         // If the "other" option is selected and then no longer selected, hide "other" text field
-        basicInfoSection.removeChild(basicInfoSection.children[7]);
+        otherTitleField.style.display = "none";
     }
 
 });
